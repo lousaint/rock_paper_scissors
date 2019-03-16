@@ -6,10 +6,12 @@
 <body>
   <script>
 
+      game();
+
       function computerPlay() {
           // return "Rock", "Paper", or "Scissors" at random
 
-          let computerSelectionNumber = Math.floor(random() * 3);
+          let computerSelectionNumber = Math.floor(Math.random() * 3);
 
           return selectionNumberToString(computerSelectionNumber);
 
@@ -29,7 +31,30 @@
       }
 
       function game() {
-          // play five round game of RPS
+          let playerScore = 0;
+          let computerScore = 0;
+
+          for (let round = 1; round <= 5; round++) {
+              console.log("Round " + round);
+
+              let result = 0;
+
+              do {
+                let playerSelection = selectionStringToNumber(prompt("What is your selection?"));
+                let computerSelection = computerPlay();
+
+                let result = playRound(playerSelection, computerSelection);
+                console.log(resultString(result, playerSelection, computerSelection));
+              } while (result == 0);
+
+              if (result == 1) {
+                  playerScore++;
+              } else if (result == -1) {
+                  computerScore++;
+              }              
+          }
+
+          console.log(finalResultString(playerScore, computerScore));
       }
 
       function selectionNumberToString(selectionNumber) {
@@ -57,6 +82,23 @@
           } else {
               returnString = "Tie! You both picked " + selectionNumberToString(playerSelection);
           }
+
+          return returnString;
+      }
+
+      function finalResultString(playerScore, computerScore) {
+          let returnString = "";
+
+          if (playerScore > computerScore) {
+              returnString += "You win!";
+          } else if (playerScore < computerScore) {
+              returnString += "You lose!";
+          } else {
+              returnString += "Tie!";
+          }
+
+          returnString += " Player: " + playerScore + ", Computer: " + computerScore;
+          return returnString;
       }
 
   </script>
