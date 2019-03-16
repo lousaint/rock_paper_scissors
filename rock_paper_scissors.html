@@ -9,37 +9,56 @@
       function computerPlay() {
           // return "Rock", "Paper", or "Scissors" at random
 
-          let randomNumber = Math.floor(random() * 3);
+          let computerSelectionNumber = Math.floor(random() * 3);
 
-          if (randomNumber == 0) {
-              return "Rock";
-          } else if (randomNumber == 1) {
-              return "Paper";
-          } else {
-              return "Scissors";
-          }
-      }
+          return selectionNumberToString(computerSelectionNumber);
+
+      }      
 
       function playRound(playerSelection, computerSelection) {
-          let playerSelectionClean = playerSelection.toLowerCase;
-          let computerSelectionClean = computerSelection.toLowerCase;
+          
+          let difference = playerSelection - computerSelection;
 
-          if (playerSelectionClean === computerSelectionClean) {
-              return "Tie! You both picked " + computerSelection;
-          }
-
-          if (playerSelectionClean == "rock" && computerSelection == "Paper") {
-              return "You lose! Paper beats Rock!";
-          } else if (playerSelectionClean == "rock" && computerSelection == "Scissors") {
-              return "You win! Rock beats scissors";
-          } else if (playerSelectionClean == "paper" && computerSelection == "Rock") {
-              return "You win! Paper beats Rock!";
+          if (difference == 1 || difference == -2) {
+              return 1;
+          } else if (difference == 0) {
+              return 0;
+          } else {
+              return -1;
           }
       }
 
       function game() {
           // play five round game of RPS
       }
+
+      function selectionNumberToString(selectionNumber) {
+          return selectionNumber == 0 ? "rock" :
+            selectionNumber == 1 ? "paper" :
+            "scissors";
+      }
+
+      function selectionStringToNumber(selectionString) {
+          let selectionStringClean = selectionString.toLowerCase();
+
+          return selectionStringClean == "rock" ? 0 :
+            selectionString == "paper" ? 1 :
+            2;
+      }
+
+      function resultString(result, playerSelection, computerSelection) {
+          
+          let returnString  = "";
+
+          if (result == 1) {
+              returnString = "You win! " + selectionNumberToString(playerSelection) + " beats " + selectionNumberToString(computerSelection);
+          } else if (result == 0) {
+              returnString = "You lose! " + selectionNumberToString(computerSelection) + " beats " + selectionNumberToString(playerSelection);
+          } else {
+              returnString = "Tie! You both picked " + selectionNumberToString(playerSelection);
+          }
+      }
+
   </script>
 </body>
 </html>
