@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rock, Paper, Scissors</title>
+</head>
+<body>
+  <script>
+
+      function computerPlay() {
+          // return "Rock", "Paper", or "Scissors" at random
+
+          let randomNumber = Math.floor(random() * 3);
+
+          if (randomNumber == 0) {
+              return "Rock";
+          } else if (randomNumber == 1) {
+              return "Paper";
+          } else {
+              return "Scissors";
+          }
+      }
+
+      function playRound(playerSelection, computerSelection) {
+          let playerSelectionClean = playerSelection.toLowerCase;
+          let computerSelectionClean = computerSelection.toLowerCase;
+
+          if (playerSelectionClean === computerSelectionClean) {
+              return "Tie! You both picked " + computerSelection;
+          }
+
+          if (playerSelectionClean == "rock" && computerSelection == "Paper") {
+              return "You lose! Paper beats Rock!";
+          } else if (playerSelectionClean == "rock" && computerSelection == "Scissors") {
+              return "You win! Rock beats scissors";
+          } else if (playerSelectionClean == "paper" && computerSelection == "Rock") {
+              return "You win! Paper beats Rock!";
+          }
+      }
+
+      function game() {
+          // play five round game of RPS
+      }
+  </script>
+</body>
+</html>
