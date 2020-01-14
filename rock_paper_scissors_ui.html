@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rock, Paper, Scissors</title>
+</head>
+<style>
+    #play-again {
+        display:none;
+    }
+</style>
+<body>
+    <h1>Rock, Paper, Scissors</h1>
+    <div id="weapons">
+        <h2>Choose your weapon!</h2>
+        <button class="weapon-selector" data-weapon="rock">Rock</button>
+        <button class="weapon-selector" data-weapon="paper">Paper</button>
+        <button class="weapon-selector" data-weapon="scissors">Scissors</button>
+    </div>
+    <div id="round">
+        <h2>Round Results</h2>
+        <div id="round-number">
+
+        </div>
+        <div id="player-selection">
+        </div>
+        <div id="computer-selection">
+    
+        </div>
+        <div id="result">
+            
+        </div>    
+    </div>
+    <div id="match">
+        <h2>Match Results</h2>
+        <div id="player-score">
+
+        </div>
+        <div id="computer-score">
+    
+        </div>
+        <div id="final-result">
+
+        </div>
+        <button id="play-again">Play Again</button>
+    </div>
+ 
+ <script>
+
+      function computerPlay() {
+          // return "Rock", "Paper", or "Scissors" at random
+
+          let computerSelectionNumber = Math.floor(Math.random() * 3);
+
+          return computerSelectionNumber;
+      }      
+
+      function playRound(playerSelection, computerSelection) {
+          
+          let difference = playerSelection - computerSelection;
+
+          if (difference == 1 || difference == -2) {
+              return 1;
+          } else if (difference == 0) {
+              return 0;
+          } else {
+              return -1;
+          }
+      }
+
+      function selectionNumberToString(selectionNumber) {
+          return selectionNumber == 0 ? "rock" :
+            selectionNumber == 1 ? "paper" :
+            "scissors";
+      }
+
+      function selectionStringToNumber(selectionString) {
+          let selectionStringClean = selectionString.toLowerCase();
+
+          return selectionStringClean == "rock" ? 0 :
+            selectionString == "paper" ? 1 :
+            2;
+      }
+
+      function resultString(result, playerSelection, computerSelection) {
+          
+          let returnString  = "";
+
+          if (result == 1) {
+              returnString = "You win! " + selectionNumberToString(playerSelection) + " beats " + selectionNumberToString(computerSelection);
+          } else if (result == -1) {
+              returnString = "You lose! " + selectionNumberToString(computerSelection) + " beats " + selectionNumberToString(playerSelection);
+          } else {
+              returnString = "Tie! You both picked " + selectionNumberToString(playerSelection);
+          }
+
+          return returnString;
+      }
+
+      function finalResultString(playerScore, computerScore) {
+          let returnString = "";
+
+          if (playerScore > computerScore) {
+              returnString += "You win!";
+          } else if (playerScore < computerScore) {
+              returnString += "You lose!";
+          } else {
+              returnString += "Tie!";
+          }
+
+          returnString += " Player: " + playerScore + ", Computer: " + computerScore;
+          return returnString;
+      }
+
+      function game() {
+          let playerScore = 0;
+          let computerScore = 0;
+
+          for (let round = 1; round <= 5; round++) {
+              console.log("Round " + round);
+
+              let result = 0;
+
+              do {
+                let playerSelection = selectionStringToNumber(prompt("What is your selection?"));
+                let computerSelection = computerPlay();
+
+                result = playRound(playerSelection, computerSelection);
+                console.log(resultString(result, playerSelection, computerSelection));
+              } while (result == 0);
+
+              if (result == 1) {
+                  playerScore++;
+              } else if (result == -1) {
+                  computerScore++;
+              }              
+          }
+
+          console.log(finalResultString(playerScore, computerScore));
+      }
+
+      let roundNumber = 1;
+      let playerScore = 0;
+      let computerScore = 0;
+      let gamePoint = 5;
+      let buttons = document.querySelectorAll('.weapon-selector');
+
+      function scoreRound(result) {
+        if (result == 1) {
+            playerScore++;
+            roundNumber++;
+        } else if (result == -1) {
+            computerScore++;
+            roundNumber++;
+        }
+
+        document.querySelector("#player-score").textContent = "You: " + playerScore;
+        document.querySelector("#computer-score").textContent = "Computer: " + computerScore;
+
+        if (roundNumber == 5) {
+            document.querySelector("#final-result").textContent = finalResultString(playerScore, computerScore);
+            buttons.forEach(button => button.disabled = true);
+            document.querySelector("#play-again").style.display = "inline-block";
+        }
+
+      }
+
+      function selectWeapon(e) {
+          let playerSelection = selectionStringToNumber(this.dataset.weapon);
+          let computerSelection = computerPlay();
+          let result = playRound(playerSelection, computerSelection);
+          document.querySelector('#round-number').textContent = "Round " + roundNumber;
+          document.querySelector('#player-selection').textContent = "You chose " + selectionNumberToString(playerSelection);
+          document.querySelector('#computer-selection').textContent = "Computer chose " + selectionNumberToString(computerSelection);
+          document.querySelector("#result").textContent = resultString(result, playerSelection, computerSelection);
+
+          scoreRound(result);
+      }
+      
+      buttons.forEach(button => button.addEventListener('click', selectWeapon));
+
+      function playAgain(e) {
+          roundNumber = 1;
+          playerScore = computerScore = 0;
+          buttons.forEach(button => button.disabled = false);
+          this.style.display = "none";
+
+          document.querySelectorAll('#round div').forEach(div => div.textContent = "");
+          document.querySelectorAll('#match div').forEach(div => div.textContent = "");
+      }
+      document.querySelector('#play-again').addEventListener('click', playAgain);
+
+
+  </script>
+</body>
+</html>
